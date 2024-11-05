@@ -1,23 +1,11 @@
 ﻿using FluentAssertions;
 using Moq;
-using Sheenam.Api.Brokers.Storages;
 using Sheenam.Api.Models.Foundations.Guests;
-using Sheenam.Api.Services.Foundations.Guests;
 
-
-namespace Sheenam.Api.Tests.Unit
+namespace Sheenam.Api.Tests.Unit.Services.Foundations.Guests
 {
-    public class GuestServiceTests
+    public partial class GuestServiceTests
     {
-        private readonly Mock<IStorageBroker> storageBrokerMock;
-        private readonly IGuestService guestService;
-
-        public GuestServiceTests()
-        {
-            this.storageBrokerMock = new Mock<IStorageBroker>();
-            this.guestService = new GuestService(storageBroker: this.storageBrokerMock.Object);
-        }
-
         [Fact]
         public async Task ShouldAddGuestAsync()
         {
@@ -34,10 +22,10 @@ namespace Sheenam.Api.Tests.Unit
                 PhoneNumber = "+998975672009"
             };
 
-            this.storageBrokerMock.Setup(broker => broker.InsertGuestAsync(randomGuest)).ReturnsAsync(randomGuest);
+            storageBrokerMock.Setup(broker => broker.InsertGuestAsync(randomGuest)).ReturnsAsync(randomGuest);
 
             // Act
-            Guest actual = await this.guestService.AddGuestAsync(randomGuest);
+            Guest actual = await guestService.AddGuestAsync(randomGuest);
 
             // Assert
             actual.Should().BeEquivalentTo(randomGuest);
